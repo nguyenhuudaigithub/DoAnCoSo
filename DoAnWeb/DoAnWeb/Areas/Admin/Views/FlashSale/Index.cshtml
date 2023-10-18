@@ -1,0 +1,140 @@
+﻿@model PagedList.PagedList<DoAnWeb.Models.EF.Product>
+@using PagedList;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "danh sách sản phẩm FlashSale";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Quản Lý @ViewBag.Title</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Trang Admin</a></li>
+                    <li class="breadcrumb-item active">Danh sách sản phẩm FlashSale</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Danh sách sản phẩm FlashSale</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6">
+                    @using (Html.BeginForm("Index", "FlashSale", FormMethod.Get, new { }))
+                    {
+                        <div class="input-group input-group-sm">
+                            @Html.TextBox("SearchText")
+                            <span class="input-group-append">
+                                <button type="submit" class="btn btn-info btn-flat">Tìm kiếm</button>
+                            </span>
+                        </div>
+                    }
+                </div>
+            </div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Hình ảnh</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Danh mục</th>
+                        <th>Số Lượng</th>
+                        <th>Giá</th>
+                        <th>Ngày tạo</th>
+
+                        <th class="text-center">Trạng thái FlashSale</th>
+                        <th style="width:150px;"></th>
+                        @*<th><a href="/admin/FlashSale/add" class="btn btn-primary">Add Time FlashSale</a></th>*@
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        var i = (ViewBag.Page - 1) * ViewBag.PageSize + 1;
+                        foreach (var item in Model)
+                        {
+                            var strCheckFlashSale = item.isflashsale ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
+                            <tr id="trow_@item.id">
+                                <td>@i</td>
+                                <td><img src="@item.image" width="50" /></td>
+                                <td>@item.title</td>
+                                <td>@item.ProductCategory.title</td>
+                                <td>@item.quantity</td>
+                                <td>@item.price</td>
+                                <td>@item.createddate.ToString("dd/MM/yyyy")</td>
+                                <td class="text-center">
+                                    <a href="#" data-id="@item.id" class="btnFlashSale">@Html.Raw(strCheckFlashSale)</a>
+                                </td>
+                                @*<td>
+                                        <a href="/admin/flashsale/edit/@item.id" class="btn btn-sm btn-primary">Sửa</a>
+                                    </td>*@
+                            </tr>
+                            i++;
+
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4">Không có bản ghi nào</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6" style="text-align:right" ;>
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                </div>
+                <!-- /.card-footer-->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+</section>
+<!-- /.content -->
+
+@section scripts{
+    <script>
+
+        $('body').on('click', '.btnFlashSale', function (e) {
+                e.preventDefault();
+                var btn = $(this);
+                var id = btn.data("id");
+                $.ajax({
+                    url: '/admin/FlashSale/isflashsale',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (rs) {
+                        if (rs.success) {
+                            if (rs.isflashsale) {
+                                btn.html("<i class='fa fa-check text-success'></i>");
+                            }
+                            else {
+                                btn.html("<i class='fas fa-times text-danger'></i>");
+
+                            }
+                        }
+                    }
+                })
+            });
+
+    </script>
+}
+

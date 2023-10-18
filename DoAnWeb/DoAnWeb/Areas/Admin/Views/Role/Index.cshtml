@@ -1,0 +1,65 @@
+﻿
+@model IEnumerable<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+    <!-- Content -->
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Trang Admin /</span> Danh Mục</h4>
+
+        <div class="card">
+            <h5 class="card-header">
+                Danh Mục
+                <a href="/Admin/Role/Create" class="btn btn-primary" style="margin-left:86%">Thêm Danh Mục</a>
+            </h5>
+            <div class="table-responsive text-nowrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Tên Quyền</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Name</td>
+                                <td>
+                                    <a href="#" data-id="@item.Id" class="btn btn-sm btn-danger btnDelete">Xóa</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+@section scripts{
+    <script>
+        $('.btnDelete').on('click', function () {
+            var roleId = $(this).data('id'); 
+            $.ajax({
+                url: '/admin/role/delete', 
+                type: 'POST',
+                dataType: 'json',
+                data: { id: roleId }, 
+                success: function (response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        alert('Xóa danh mục không thành công.');
+                    }
+                },
+                error: function () {
+                    alert('Đã xảy ra lỗi.');
+                }
+            });
+        });
+   
+    </script>
+}
+

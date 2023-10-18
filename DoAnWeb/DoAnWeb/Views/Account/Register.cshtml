@@ -1,0 +1,84 @@
+﻿@model DoAnWeb.Models.RegisterViewModel
+
+@{
+    ViewBag.Title = "Đăng ký";
+    Layout = "~/Views/Shared/_LayOutSR.cshtml";
+}
+
+<style>
+    .row {
+        height: 820px;
+    }
+</style>
+<div class="col-md-6 right">
+    <div class="input-box">
+        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <header style="font-size: 35px;">Đăng Ký</header>
+            <p style="color:green">
+                @ViewBag.Message
+            </p>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="input-field">
+                @Html.TextBoxFor(m => m.UserName, new { @class = "input", id = "email", autocomplete = "off" })
+                <label for="email">Tài Khoản : </label>
+                @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+            </div>
+            <div class="input-field">
+                @Html.TextBoxFor(m => m.Email, new { @class = "input", id = "email", autocomplete = "off" })
+                <label for="email">Email :</label>
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            </div>
+            <div class="input-field">
+                @Html.TextBoxFor(m => m.FullName, new { @class = "input", id = "email", autocomplete = "off" })
+                <label for="email">Họ Tên :</label>
+                @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger" })
+            </div>
+            <div class="input-field">
+                @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "input", id = "email", autocomplete = "off" })
+                <label for="email">Số Điện Thoại :</label>
+                @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+            </div>
+            <div class="input-field">
+                <label for="email" style="font-size: 13px">Giới Tính :</label>
+                <div style="display:flex; margin-top:37px">
+                    <div style="margin-left: 100px; font-size: 13px">
+                        @Html.RadioButton("Gender", true, true, new { id = "nam" }) Nam
+                    </div>
+                    <div style="margin-left: 48px; font-size: 13px">
+                        @Html.RadioButton("Gender", false, false, new { id = "nu" }) Nữ
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-field" style="margin-top: 31px;">
+                @Html.TextBoxFor(m => m.Address, new { @class = "input", id = "email", autocomplete = "off" })
+                <label for="email">Địa Chỉ :</label>
+                @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="input-field">
+                @Html.PasswordFor(m => m.Password, new { @class = "input", id = "password" })
+                <label for="password">Mật Khẩu</label>
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            </div>
+            <div class="input-field">
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "input", id = "password" })
+                <label for="password">Mật Lại Khẩu</label>
+                @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="input-field" style="margin-top:5%">
+                <input type="submit" class="submit" value="Đăng Ký">
+            </div>
+            <div class="signin">
+                <span>Bạn đã có tài khoản? <a style="margin-left:0px" href="@Url.Action("Login", "Account")">Đăng nhập tại đây</a></span>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

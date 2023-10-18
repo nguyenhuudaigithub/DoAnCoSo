@@ -1,0 +1,48 @@
+﻿@using DoAnWeb.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Đăng Nhập";
+    Layout = "~/Views/Shared/_LayOutSR.cshtml";
+}
+<div class="col-md-6 right">
+    <div class="input-box">
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <header style="font-size: 35px;">Đăng Nhập</header>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="input-field">
+                @Html.TextBoxFor(m => m.UserName, new { @class = "input", id = "email", autocomplete = "off" })
+                <label for="email">Tài Khoản</label>
+                @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="input-field">
+                @Html.PasswordFor(m => m.Password, new { @class = "input", id = "password" })
+                <label for="password">Mật Khẩu</label>
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            </div>
+            @Html.CheckBoxFor(m => m.RememberMe)
+            @Html.LabelFor(m => m.RememberMe)
+            @Html.ActionLink("Quên mật khẩu?", "ForgotPassword")
+            <div class="input-field" style="margin-top:5%">
+                <input type="submit" class="submit" value="Đăng Nhập">
+            </div>
+
+            <div class="signin">
+                <span>Chưa có tài khoản? <a style="margin-left:0px" href="@Url.Action("Register", "Account")">Đăng ký tại đây</a></span>
+            </div>
+            @*<div>
+                <p class="w-100 text-center" style="font-weight: 100; margin-top: 5%">&mdash; Đăng Nhập Bằng &mdash;</p>
+                <div>
+                    <section>
+                        @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+                    </section>
+                </div>
+            </div>*@
+        }
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,22 @@
+﻿
+@model Microsoft.AspNet.Identity.EntityFramework.IdentityRole
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+    <!-- Content -->
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Trang Admin /</span> Danh Mục</h4>
+        @using (Html.BeginForm())
+        {
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <td>Nhập Tên Quyền:</td>
+                    <td>@Html.EditorFor(m => m.Name)</td>
+                </tr>
+            </table>
+            <input class="btn rounded-pill btn-primary" type="submit" value="Tạo Quyền" />
+        }
+    </div>

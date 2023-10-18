@@ -1,0 +1,117 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<style>
+    #header {
+        background: rgba(12, 11, 9, 0.6);
+        top: 40px;
+    }
+</style>
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/main_styles.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/bootstrap4/bootstrap.min.css">
+
+@Html.Partial("~/Views/Shared/_TopNav.cshtml")
+<section id="hero" class="d-flex align-items-center" style="background: url('../../content/user/assets/img/hero-bg.jpg') top center; ">
+    <div class="container position-relative text-center text-lg-start" data-aos="zoom-in" data-aos-delay="100">
+        <div class="row">
+            <div class="col-lg-8">
+                <h1>Xin Mừng Bạn Đến Với <span> <br> ĐSN - COFFEE</span></h1>
+                <h2>Nơi Đây Sẽ Mang Đến Cho Bạn Những <br>    "Hương Vị Độc Đáo - Chất Lượng Hàng Đầu !" </h2>
+
+                <div class="btns">
+                    <a href="#menu" class="btn-menu animated fadeInUp scrollto">Thực Đơn</a>
+                    <a href="#book-a-table" class="btn-book animated fadeInUp scrollto">Đặt Bàn</a>
+                </div>
+            </div>
+            <div class="col-lg-4 d-flex align-items-center justify-content-center position-relative" data-aos="zoom-in" data-aos-delay="200">
+                <a href="https://www.youtube.com/watch?v=8h48Qldp99k&t=1s" class="glightbox play-btn"></a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ======= About Section ======= -->
+<section id="about" class="about">
+    <div class="container" data-aos="fade-up" style="color:white">
+
+        <div class="row">
+            <div class="col-lg-6 order-1 order-lg-2" data-aos="zoom-in" data-aos-delay="100">
+                <div class="about-img">
+                    <img src="~/Content/User/assets/img/about.jpg" alt="">
+                </div>
+            </div>
+            <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content">
+                <h3>TỪ NHỮNG CAFE, CHÚNG TÔI TẠO RA NIỀM ĐAM MÊ.</h3>
+                <p class="fst-italic">
+                    Chúng tôi tin rằng từng sản phẩm trà và cà phê sẽ càng thêm hảo hạng khi được tạo ra từ sự phấn đấu không ngừng cùng niềm đam mê. Và chính kết nối dựa trên niềm tin, sự trung thực và tin yêu sẽ góp phần mang đến những nét đẹp trong văn hóa thưởng trà và cà phê ngày càng bay cao, vươn xa.
+                </p>
+                <ul>
+                    <li><i class="bi bi-check-circle"></i> Hương vị mới mới lạ, độc đáo.</li>
+                    <li><i class="bi bi-check-circle"></i> Chất lượng sản phẩm tuyệt hảo.</li>
+                    <li><i class="bi bi-check-circle"></i> Đội ngũ tràn đầy nhiệt huyết.</li>
+                </ul>
+                <p>
+                    Từ những búp trà xanh và hạt cà phê thượng hạng cùng mong muốn mang lại cho khách hàng những trải nghiệm giá trị nhất khi thưởng thức, ĐSN - COFFEE liên tục là thương hiệu tiên phong với nhiều ý tưởng sáng tạo đi đầu trong ngành trà và cà phê.
+                </p>
+            </div>
+        </div>
+
+    </div>
+</section><!-- End About Section -->
+<!-- ======= Why Us Section ======= -->
+<section id="why-us" class="why-us" style="background-color:black">
+    <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+            <h2>Lựa Chọn</h2>
+            <p>Tại Sao Lại Lựa Chọn Cửa Hàng Chúng Tôi.</p>
+        </div>
+
+        <div class="row">
+
+            <div class="col-lg-4">
+                <div class="box" data-aos="zoom-in" data-aos-delay="100">
+                    <span>01</span>
+                    <h4>Chất Lượng Sản Phẩm</h4>
+                    <p>Những búp trà xanh và hạt cà phê được lựa một cách cận thận và tỉ mỉ.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mt-4 mt-lg-0">
+                <div class="box" data-aos="zoom-in" data-aos-delay="200">
+                    <span>02</span>
+                    <h4>Hương Vị</h4>
+                    <p>Cách chế biến thủ công, độc đáo đã góp phần tạo nên hương vị mới lạ.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mt-4 mt-lg-0">
+                <div class="box" data-aos="zoom-in" data-aos-delay="300">
+                    <span>03</span>
+                    <h4> Đội Ngũ Nhân Viên</h4>
+                    <p>Được đào tạo một cách chuyên nghiệp.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+<!-- End Why Us Section -->
+<!-- New Arrivals -->
+<!-- Best Sellers -->
+@Html.Action("Partial_ProductIsBestSeller", "Products")
+<!-- Flash Sale -->
+@Html.Action("Partial_ProductIsFlashSale", "Products")
+
+@Html.Action("MenuArrivals", "Menu")
+
+
+<!-- Blogs -->
+
+@Html.Action("Partial_News_Home", "News")
+
+<!-- ======= Contact Section ======= -->
+@Html.Partial("~/Views/Home/Contact.cshtml")
+<!-- End Contact Section -->

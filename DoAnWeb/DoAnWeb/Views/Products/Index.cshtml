@@ -1,0 +1,79 @@
+﻿@model IEnumerable<DoAnWeb.Models.EF.Product>
+
+@{
+    ViewBag.Title = "Danh sách sản phẩm";
+}
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/categories_styles.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/categories_responsive.css">
+<div class="container product_section_container" style="margin-top: 12%">
+    <div class="row">
+        <div class="col product_section clearfix">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar_section">
+                    <div class="sidebar_title">
+                        <h5>Danh mục </h5>
+                    </div>
+                    @Html.Action("MenuLeft", "Menu")
+                </div>
+            </div>
+            <!-- Main Content -->
+            <div class="main_content">
+                <!-- Products -->
+                <div class="products_iso">
+                    <div class="row">
+                        <div class="col">                          
+                            <!-- Product Grid -->
+                            <div class="product-grid">
+                                <!-- Product 1 -->
+                                @if (Model != null && Model.Any())
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        var strImage = "";
+                                        var img = item.ProductImage.FirstOrDefault(x => x.isdefault);
+                                        if (img != null) 
+                                        {
+                                            strImage = img.image;
+                                        }
+                                        <div class="product-item @item.ProductCategory.alias">
+                                            <div class="product discount product_filter">
+                                                <div class="product_image">
+                                                    <img src="@strImage" alt="@item.title">
+                                                </div>
+                                                <div class="favorite favorite_left"></div>
+                                                @if (item.pricesale > 0)
+                                                {
+                                                    <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>Sale</span></div>
+
+                                                }
+                                                <div class="product_info">
+                                                    <h6 class="product_name"><a href="/chi-tiet/@item.alias-@(item.id)" style="color:black">@item.title</a></h6>
+                                                    @if (item.pricesale > 0)
+                                                    {
+                                                        <div class="product_price">@DoAnWeb.Common.Common.FormatNumber(item.pricesale, 0)<span>@DoAnWeb.Common.Common.FormatNumber(item.price, 0)</span></div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="product_price">@DoAnWeb.Common.Common.FormatNumber(item.price, 0)</div>
+
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div class="red_button add_to_cart_button"><a href="#" class="btnAddToCart" data-id="@item.id">Thêm vào giỏ hàng.</a></div>
+                                        </div>
+                                    }
+                                }
+                            </div>                         
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Content/assets/js/categories_custom.js"></script>
+
+} 

@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AspNetCore.DataProtection.MachineKey</name>
+    </assembly>
+    <members>
+        <member name="F:Microsoft.AspNetCore.DataProtection.Cryptography.CryptoUtil.SecureUTF8Encoding">
+            <summary>
+            Similar to Encoding.UTF8, but throws on invalid bytes. Useful for security routines where we need
+            strong guarantees that we're always producing valid UTF8 streams.
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.DataProtection.Cryptography.CryptoUtil.BinaryToHex(System.Byte[])">
+            <summary>
+            Converts a byte array into its hexadecimal representation.
+            </summary>
+            <param name="data">The binary byte array.</param>
+            <returns>The hexadecimal (uppercase) equivalent of the byte array.</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.DataProtection.Cryptography.CryptoUtil.ComputeSHA256Hash(System.Byte[])">
+            <summary>
+            Computes the SHA256 hash of a given input.
+            </summary>
+            <param name="input">The input over which to compute the hash.</param>
+            <returns>The binary hash (32 bytes) of the input.</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.DataProtection.Cryptography.CryptoUtil.ComputeSHA256Hash(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Computes the SHA256 hash of a given segment in a buffer.
+            </summary>
+            <param name="buffer">The buffer over which to compute the hash.</param>
+            <param name="offset">The offset at which to begin computing the hash.</param>
+            <param name="count">The number of bytes in the buffer to include in the hash.</param>
+            <returns>The binary hash (32 bytes) of the buffer segment.</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.DataProtection.Cryptography.CryptoUtil.CreatePredictableIV(System.Byte[],System.Int32)">
+            <summary>
+            Returns an IV that's based solely on the contents of a buffer; useful for generating
+            predictable IVs for ciphertexts that need to be cached. The output value is only
+            appropriate for use as an IV and must not be used for any other purpose.
+            </summary>
+            <remarks>This method uses an iterated unkeyed SHA256 to calculate the IV.</remarks>
+            <param name="buffer">The input buffer over which to calculate the IV.</param>
+            <param name="ivBitLength">The requested length (in bits) of the IV to generate.</param>
+            <returns>The calculated IV.</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.DataProtection.Cryptography.CryptoUtil.HexToBinary(System.String)">
+            <summary>
+            Converts a hexadecimal string into its binary representation.
+            </summary>
+            <param name="data">The hex string.</param>
+            <returns>The byte array corresponding to the contents of the hex string,
+            or null if the input string is not a valid hex string.</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.DataProtection.MachineKey.Protect(System.Byte[],System.String[])">
+             <summary>
+             Cryptographically protects and tamper-proofs the specified data.
+             </summary>
+             <param name="userData">The plaintext data that needs to be protected.</param>
+             <param name="purposes">(optional) A list of purposes that describe what the data is meant for.
+             If this value is specified, the same list must be passed to the Unprotect method in order
+             to decipher the returned ciphertext.</param>
+             <returns>The ciphertext data. To decipher the data, call the Unprotect method, passing this
+             value as the 'protectedData' parameter.</returns>
+             <remarks>
+             This method supercedes the Encode method, which required the caller to know whether he wanted
+             the plaintext data to be encrypted, signed, or both. In contrast, the Protect method just
+             does the right thing and securely protects the data. Ciphertext data produced by this method
+             can only be deciphered by the Unprotect method.
+             
+             The 'purposes' parameter is an optional list of reason strings that can lock the ciphertext
+             to a specific purpose. The intent of this parameter is that different subsystems within
+             an application may depend on cryptographic operations, and a malicious client should not be
+             able to get the result of one subsystem's Protect method and feed it as input to another
+             subsystem's Unprotect method, which could have undesirable or insecure behavior. In essence,
+             the 'purposes' parameter helps ensure that some protected data can be consumed only by the
+             component that originally generated it. Applications should take care to ensure that each
+             subsystem uses a unique 'purposes' list.
+            
+             For example, to protect or unprotect an authentication token, the application could call:
+             MachineKey.Protect(..., "Authentication token");
+             MachineKey.Unprotect(..., "Authentication token");
+             
+             Applications may dynamically generate the 'purposes' parameter if desired. If an application
+             does this, user-supplied values like usernames should never directly be passed for the 'purposes'
+             parameter. They should instead be prefixed with something (like "Username: " + username) to
+             minimize the risk of a malicious client crafting input that collides with a token in use by some
+             other part of the system. Any dynamically-generated tokens should come after non-dynamically
+             generated tokens.
+             
+             For example, to protect or unprotect a private message that is tied to a specific user, the
+             application could call:
+             MachineKey.Protect(..., "Private message", "Recipient: " + username);
+             MachineKey.Unprotect(..., "Private message", "Recipient: " + username);
+             
+             In both of the above examples, is it important that the caller of the Unprotect method be able to
+             resurrect the original 'purposes' list. Otherwise the operation will fail with a CryptographicException.
+             </remarks>
+        </member>
+        <member name="M:Microsoft.AspNetCore.DataProtection.MachineKey.Unprotect(System.Byte[],System.String[])">
+            <summary>
+            Verifies the integrity of and deciphers the given ciphertext.
+            </summary>
+            <param name="protectedData">Ciphertext data that was produced by the Protect method.</param>
+            <param name="purposes">(optional) A list of purposes that describe what the data is meant for.</param>
+            <returns>The plaintext data.</returns>
+            <exception>Throws a CryptographicException if decryption fails. This can occur if the 'protectedData' has
+            been tampered with, if an incorrect 'purposes' parameter is specified, or if an application is deployed
+            to more than one server (as in a farm scenario) but is using auto-generated encryption keys.</exception>
+            <remarks>See documentation on the Protect method for more information.</remarks>
+        </member>
+    </members>
+</doc>

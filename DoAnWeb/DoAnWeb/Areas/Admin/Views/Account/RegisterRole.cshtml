@@ -1,0 +1,43 @@
+﻿
+@model DoAnWeb.Models.RegisterViewModel
+@{
+    ViewBag.Title = "RegisterRole";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+    <!-- Content -->
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Trang Admin /</span> Danh Mục</h4>
+        <div class="card">
+            @using (Html.BeginForm("RegisterRole", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <h5 class="card-header">
+                    Gán Quyền Cho Người Dùng
+                </h5>
+                <hr />
+                <div class="table-responsive text-nowrap" style="margin: 74px">
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.Label("Tên Các Tài Khoản", new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("UserName")
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top:20px">
+                        @Html.Label("Tên Các Quyền", new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("Name")
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" style="margin-top:30px" value="Gán" />
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+

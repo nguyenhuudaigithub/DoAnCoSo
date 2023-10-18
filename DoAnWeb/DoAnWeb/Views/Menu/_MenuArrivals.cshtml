@@ -1,0 +1,27 @@
+﻿@model IEnumerable<DoAnWeb.Models.EF.ProductCategory>
+<section id="menu" class="menu section-bg">
+    <div class="container aos-init aos-animate" data-aos="fade-up">
+        @if (Model != null && Model.Any())
+        {
+            <div class="section-title">
+                <h2>Thực Đơn</h2>
+                <p>Sản Phẩm Của Cửa Hàng</p>
+            </div>
+
+            <div class="row aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+                <div class="col-lg-12 d-flex justify-content-center">
+                    <ul id="menu-flters">
+                        <li class="filter-active" data-filter="*">Tất Cả</li>
+                        @foreach (var item in Model)
+                        {
+                            <li data-filter=".@item.alias">@item.title</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="row menu-container aos-init aos-animate" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }' style="position: relative; height: 600px;">
+                @Html.Action("Partial_ItemsByCateId", "Products")
+            </div>
+        }
+    </div>
+</section>

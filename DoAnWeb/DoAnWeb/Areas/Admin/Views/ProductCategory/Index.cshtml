@@ -1,0 +1,125 @@
+﻿@model IEnumerable<DoAnWeb.Models.EF.ProductCategory>
+@{
+    ViewBag.Title = "Quản Lý Danh Mục Sản Phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<!--Thanh Navbar -->
+<nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+     id="layout-navbar">
+    <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+        <!-- Tìm Kiếm -->
+        <div class="navbar-nav align-items-center">
+            @using (Html.BeginForm("Index", "ProductCategory", FormMethod.Get, new { }))
+            {
+                <div class="nav-item d-flex align-items-center">
+                    <i class="bx bx-search fs-4 lh-0"></i>
+                    @Html.TextBox("SearchText", null, new { @type = "text", @class = "form-control border-0 shadow-none", @placeholder = "Tìm kiếm...", @aria_label = "Tìm kiếm..." })
+                </div>
+            }
+        </div>
+        <!-- /Tìm Kiếm -->
+    </div>
+</nav>
+<!-- Content Header (Page header) -->
+<section class="content-header" style="margin-top:20px">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-8">
+                <h1 style="margin-left: 44%; font-weight: bold; font-size: 35px">@ViewBag.Title</h1>
+            </div>
+            <div class="col-sm-4">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/admin/home">Trang Admin</a></li>
+                    <li class="breadcrumb-item active">@ViewBag.Title</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-tools">
+                <a href="/admin/productcategory/add" class="btn btn-primary">Thêm Mới @ViewBag.Title</a>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Hình ảnh</th>
+                        <th>Danh mục</th>
+                        <th>Ngày tạo</th>
+                        <th>Chức năng</th>
+                        @*<th>Trạng thái</th>*@
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        var i = 1;
+                        foreach (var item in Model)
+                        {
+                            //var strCheck = item.isactive ? "<a href='#'><i class='fa fa-check text-success'></i></a>" : "<a href='#'><i class='fas fa-times text-danger'></i> </a>";
+                            <tr id="trow_@item.id">
+                                <td>@i</td>
+                                <td><img src="@item.icon" width="50" /></td>
+                                <td>@item.title</td>
+                                <td>@item.createddate.ToString("dd/MM/yyyy")</td>
+                                @*<td  class="text-center">
+                                        @Html.Raw(strCheck)
+                                    </td>*@
+                                <td>
+                                    <a href="/admin/productcategory/edit/@item.id" class="btn btn-sm btn-primary">Sửa</a>
+                                    <a href="#" data-id="@item.id" class="btn btn-sm btn-danger btnDelete">Xóa</a>
+                                </td>
+                            </tr>
+                            i++;
+                        }
+
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4">Không có bản ghi nào</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+</section>
+<!-- /.content -->
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('body').on('click', '.btnDelete', function () {
+                var id = $(this).data("id");
+                var conf = confirm('Bạn có muốn xóa bản ghi này không!');
+                if (conf == true) {
+                    $.ajax({
+                        url: '/admin/productcategory/delete',
+                        type: 'POST',
+                        data: { id: id },
+                        success: function (rs) {
+                            if (rs.success) {
+                                $('#trow_' + id).remove();
+                            }
+                        }
+                    })
+                }
+            });
+        });
+    </script>
+}

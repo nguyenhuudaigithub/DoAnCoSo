@@ -1,0 +1,218 @@
+﻿@model PagedList.PagedList<DoAnWeb.Models.EF.Product>
+@using PagedList;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Quản Lý Sản Phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<!--Thanh Navbar -->
+<nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+     id="layout-navbar">
+    <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+        <!-- Tìm Kiếm -->
+        <div class="navbar-nav align-items-center">
+            @using (Html.BeginForm("Index", "Product", FormMethod.Get, new { }))
+            {
+                <div class="nav-item d-flex align-items-center">
+                    <i class="bx bx-search fs-4 lh-0"></i>
+                    @Html.TextBox("SearchText", null, new { @type = "text", @class = "form-control border-0 shadow-none", @placeholder = "Tìm kiếm...", @aria_label = "Tìm kiếm..." })
+                </div>
+            }
+        </div>
+        <!-- /Tìm Kiếm -->
+    </div>
+</nav>
+<!-- Content Header (Page header) -->
+<section class="content-header" style="margin-top:20px">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-8">
+                <h1 style="margin-left: 58%; font-weight: bold; font-size:35px">@ViewBag.Title</h1>
+            </div>
+            <div class="col-sm-4">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/admin/home">Trang Admin</a></li>
+                    <li class="breadcrumb-item active">@ViewBag.Title</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-tools">
+                <a href="/admin/product/add" class="btn btn-primary">Thêm Mới Sản Phẩm</a>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Hình ảnh</th>
+                        <th class="text-center">Tên sản phẩm</th>
+                        <th>Danh mục</th>
+                        <th>Số Lượng</th>
+                        <th>Giá</th>
+                        <th>Ngày tạo</th>
+                        <th>Home</th>
+                        <th>Bán Chạy</th>
+                        <th>Trạng thái</th>
+                        <th style="width:150px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        var i = (ViewBag.Page - 1) * ViewBag.PageSize + 1;
+                        foreach (var item in Model)
+                        {
+                            var strCheck = item.isactive ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
+                            var strCheckHome = item.ishome ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
+                            var strCheckSale = item.issale ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
+                            var strImg = "";
+                            var CheckImage = item.ProductImage.FirstOrDefault(x => x.isdefault);
+                            if (CheckImage != null)
+                            {
+                                strImg = CheckImage.image;
+                            }
+                            <tr id="trow_@item.id">
+
+                                <td>@i</td>
+                                <td><img class="imgproduct" data-id="@item.id" src="@strImg" width="50" /></td>
+                                <td>@item.title</td>
+                                <td>@item.ProductCategory.title</td>
+                                <td>@item.quantity</td>
+                                <td>@item.price</td>
+                                <td>@item.createddate.ToString("dd/MM/yyyy")</td>
+                                <td class="text-center">
+                                    <a href="#" data-id="@item.id" class="btnHome"> @Html.Raw(strCheckHome)</a>
+                                </td>
+                                <td class="text-center">
+                                    <a href='#' data-id="@item.id" class="btnSale">@Html.Raw(strCheckSale)</a>
+                                </td>
+                                <td class="text-center">
+                                    <a href="#" data-id="@item.id" class="btnActive"> @Html.Raw(strCheck)</a>
+                                </td>
+                                <td>
+                                    <a href="/admin/product/edit/@item.id" class="btn btn-sm btn-primary">Sửa</a>
+                                    <a href="#" data-id="@item.id" class="btn btn-sm btn-danger btnDelete">Xóa</a>
+                                </td>
+                            </tr>
+                            i++;
+
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4">Không có bản ghi nào</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6" style="text-align:right" ;>
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                </div>
+                <!-- /.card-footer-->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+</section>
+<!-- /.content -->
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('body').on('click', '.btnDelete', function () {
+                var id = $(this).data("id");
+                var conf = confirm('Bạn có muốn xóa bản ghi này không!');
+                if (conf == true) {
+                    $.ajax({
+                        url: '/admin/product/delete',
+                        type: 'POST',
+                        data: { id: id },
+                        success: function (rs) {
+                            if (rs.success) {
+                                $('#trow_' + id).remove();
+                            }
+                        }
+                    })
+                }
+            });
+            $('body').on('click', '.btnActive', function (e) {
+                e.preventDefault();
+                var btn = $(this);
+                var id = btn.data("id");
+                $.ajax({
+                    url: '/admin/product/isactive',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (rs) {
+                        if (rs.success) {
+                            if (rs.isactive) {
+                                btn.html("<i class='fa fa-check text-success'></i>");
+                            }
+                            else {
+                                btn.html("<i class='fas fa-times text-danger'></i>");
+
+                            }
+                         }
+                    }
+                })
+            });
+            $('body').on('click', '.btnHome', function (e) {
+                e.preventDefault();
+                var btn = $(this);
+                var id = btn.data("id");
+                $.ajax({
+                    url: '/admin/product/ishome',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (rs) {
+                        if (rs.success) {
+                            if (rs.ishome) {
+                                btn.html("<i class='fa fa-check text-success'></i>");
+                            }
+                            else {
+                                btn.html("<i class='fa fa-times text-danger'></i>")
+                            }
+                        }
+                    }
+                })
+            }
+            );
+
+            $('body').on('click', '.btnSale', function (e) {
+                e.preventDefault();
+                var btn = $(this);
+                var id = btn.data("id");
+                $.ajax({
+                    url: '/admin/product/issale',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (rs) {
+                        if (rs.success) {
+                            if (rs.issale) {    
+                                btn.html("<i class='fa fa-check text-success'></i>");
+                            }
+                            else {
+                                btn.html("<i class='fa fa-times text-danger'></i>")
+                            }
+                        }
+                    }
+                })
+            });
+        });
+    </script>
+}

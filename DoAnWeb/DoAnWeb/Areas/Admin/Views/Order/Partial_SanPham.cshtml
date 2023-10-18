@@ -1,0 +1,30 @@
+﻿@model IEnumerable<DoAnWeb.Models.EF.OrderDetail>
+@if (Model != null && Model.Any())
+{
+    int i = 1;
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Tên sản phẩm</th>
+                <th>Giá</th>
+                <th>Số lượng</th>
+                <th>Thành tiền</th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@i</td>
+                    <td>@item.Product.title</td>
+                    <td>@item.price</td>
+                    <td>@item.quantity</td>
+                    <td>@DoAnWeb.Common.Common.FormatNumber((item.price * item.quantity), 0)</td>
+                </tr>
+                i++;
+            }
+        </tbody>
+    </table>
+}

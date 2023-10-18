@@ -1,0 +1,54 @@
+﻿@model PagedList.PagedList<DoAnWeb.Models.EF.News>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/main_styles.css">
+
+<style>
+    .news_section_container{
+        margin-top:180px;
+    }
+    .row-item-new{
+        margin-bottom:20px;
+    }
+    .tittle-news{
+        font-size: 24px;
+        border-bottom: 1px solid;
+        padding: 15px 0;
+        margin-bottom: 25px;
+    }
+    .img-box img{
+        max-height:100%;
+        max-width:100%;
+    }
+</style>
+<div class="container news_section_container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="tittle-news">Tin tức</h1>
+            <p>Tin tức mới nhất</p>
+        </div>
+    </div>
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <div class="row row-item-new">
+                <div class="col-md-3">
+                    <div class="img-box">
+                        <a href="" title="@item.title"><img src="@item.image" alt="@item.title" /></a>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="content-box">
+                        <h3><a href="/@item.alias-n@(item.id)" title="@item.title">@item.title</a></h3>
+                        <div class="description-box">
+                            @item.description
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }      
+    }
+</div>

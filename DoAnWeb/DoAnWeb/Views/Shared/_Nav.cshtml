@@ -1,0 +1,88 @@
+﻿<header id="header" class="fixed-top d-flex align-items-cente">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-lg-between">
+        <h1 class="logo me-auto me-lg-0"><a href="/Home/Index">ĐSN - COFFEE</a></h1>
+
+        <nav id="navbar" class="navbar order-last order-lg-0">
+            @Html.Action("MenuTop", "Menu")
+            <ul>
+                <li class="nav-link scrollto">
+                    <a href="/gio-hang">
+                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                        <span id="checkout_items" class="checkout_items" style=" left: 63px;">0</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <li class="account" style="background: none; width: fit-content">
+            @if (!Request.IsAuthenticated)
+            {
+                <a href="#" class="book-a-table-btn scrollto d-none d-lg-flex">
+                    Tài Khoản
+                    <i class="fa fa-angle-down"></i>
+                </a>
+
+                <ul class="account_selection" style="width: fit-content; background-color: #cfba98; border-radius: 25px;">
+                    <li>
+                        <a href="/account/login" style="color: black; width: fit-content; background: none; transform: translateX(-20%)">
+                            <i class="fa fa-sign-in" aria-hidden="true" style="transform: translateX(110%)">
+                            </i>
+                            Đăng Nhập
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/account/Register" style="color: black; background: none; transform: translateX(-28%)">
+                            <i class=" fa fa-user fa-fw" aria-hidden="true" style="transform: translateX(70%)">
+                            </i>Đăng Ký
+                        </a>
+                    </li>
+                </ul>
+            }
+            else
+            {
+                
+                <ul class="account_selection" style="width: fit-content;
+                background-color: #cfba98; border-radius: 30px">
+                    <li>
+                        <a href="/" style="color: black; background: none; transform: translateX(-20%)">
+                            Thông Tin Cá Nhân
+
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:document.getElementById('logOffForm').submit()"
+                           style="color:black; width: auto;
+                                   background: none;
+                                   transform: translateX(-24%)">
+                            <i class="fa fa-sign-in" aria-hidden="true"
+                               style="color:black; width: auto;
+                                   background: none;
+                                   transform: translateX(40%)">
+                            </i>Đăng Xuất
+                        </a>
+                    </li>
+                </ul>
+
+
+                <div class="btn-group open">
+                    <a href="#" class="book-a-table-btn scrollto d-none d-lg-flex">
+                        @*<a class="btn btn-primary" href="#">*@
+                        <i class="fa fa-user fa-fw" , style="font-size: 20px; transform: translateX(-10px)">
+
+
+                        </i>@User.Identity.Name
+                        <i class="fa fa-angle-down" , style="transform: translateX(10px)"></i>
+                    </a>
+                </div>
+            }
+        </li>
+
+        @if (Request.IsAuthenticated)
+        {
+            <div style="display:none">
+                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { @id = "logOffForm" }))
+                {
+                    @Html.AntiForgeryToken()}
+            </div>
+        }
+    </div>
+</header>   

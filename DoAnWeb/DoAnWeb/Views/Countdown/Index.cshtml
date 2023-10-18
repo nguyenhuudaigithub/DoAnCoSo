@@ -1,0 +1,31 @@
+﻿@{
+    Layout = null;
+}
+<p>Kết thúc sau: </p>
+<div id="countdown"></div>
+<script>
+    var startDate = new Date('@ViewBag.StartDate');
+    var endDate = new Date('@ViewBag.EndDate');
+    var countdownDiv = document.getElementById('countdown');
+
+    function updateCountdown() {
+      var now = new Date();
+        var timeLeft = endDate - now;
+      var daysLeft = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+      var hoursLeft = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
+      var minutesLeft = Math.floor((timeLeft / (1000 * 60)) % 60);
+      var secondsLeft = Math.floor((timeLeft / 1000) % 60);
+
+      if (timeLeft <= 0) {
+        countdownDiv.innerHTML = "Flash Sale đã kết thúc";
+      } else {
+        countdownDiv.innerHTML = daysLeft + " Ngày " + hoursLeft + " Giờ " + minutesLeft + " Phút " + secondsLeft + " Giây";
+      }
+    }
+
+    // Update countdown every second
+    setInterval(updateCountdown, 1000);
+</script>
+
+
+

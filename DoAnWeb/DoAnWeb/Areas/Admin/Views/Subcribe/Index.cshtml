@@ -1,0 +1,62 @@
+﻿@model PagedList.PagedList<DoAnWeb.Models.EF.Subscribe>
+@using PagedList;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Subscribe";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Danh sách Subscribe</h3>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="text-center">STT</th>
+                        <th>Email</th>
+                        <th>Ngày đăng kí</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        var i = (ViewBag.Page - 1) * ViewBag.PageSize + 1;
+                        ;
+                        foreach (var item in Model)
+                        {
+                            <tr id="trow_@item.id">
+                                <td class="text-center">@i</td>
+                                <td>@item.email</td>
+                                <td>@item.createddate.ToString("dd/MM/yyyy")</td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4">Không có tài khoản đăng kí nào</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->

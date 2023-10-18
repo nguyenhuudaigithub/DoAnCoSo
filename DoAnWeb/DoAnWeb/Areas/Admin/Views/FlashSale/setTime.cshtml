@@ -1,0 +1,85 @@
+﻿@model PagedList.PagedList<DoAnWeb.Models.EF.TimeFLS>
+@using PagedList;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Time Flash Sale";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<!-- Content Header (Page header) -->
+<section class="content-header" style="margin-top:20px">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-8">
+                <h1 style="margin-left: 58%; font-weight: bold; font-size:35px">@ViewBag.Title</h1>
+            </div>
+            <div class="col-sm-4">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/admin/home">Trang Admin</a></li>
+                    <li class="breadcrumb-item active">@ViewBag.Title</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-tools">
+                <a href="/admin/FlashSale/add" class="btn btn-primary">Add time Flash Sale</a>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Ngày giờ bắt đầu</th>
+                        <th>Ngày giờ kết thúc</th>
+                        <th style="width:150px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        var i = (ViewBag.Page - 1) * ViewBag.PageSize + 1;
+                        foreach (var item in Model)
+                        {
+
+                            <tr id="trow_@item.id">
+
+                                <td>@i</td>
+                                <td>@item.ngayBD</td>
+                                <td>@item.ngayKT</td>
+
+                            </tr>
+                            i++;
+
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4">Không có bản ghi nào</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6" style="text-align:right" ;>
+                    @Html.PagedListPager(Model, page => Url.Action("setTime", new { page }))
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                </div>
+                <!-- /.card-footer-->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+</section>
+<!-- /.content -->

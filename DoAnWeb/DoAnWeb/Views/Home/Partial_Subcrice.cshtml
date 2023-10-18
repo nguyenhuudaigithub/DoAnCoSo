@@ -1,0 +1,29 @@
+﻿@model DoAnWeb.Models.EF.Subscribe
+<div>
+    @using (Ajax.BeginForm("Subscribe", "Home", new AjaxOptions
+    {
+        OnBegin = "OnBeginSub",
+        OnSuccess = "OnSuccessSub",
+        OnFailure = "OnFailureSub"
+    }))
+    {
+        @Html.AntiForgeryToken()
+        <script>
+            function OnBeginSub() {
+
+            }
+            function OnSuccessSub(rs) {
+                if (rs.Success) {
+                    alert("Chúc mừng! Bạn đã là thành viên của chúng tôi!");
+                }
+            }
+            function OnFailureSub(rs) { }
+        </script>
+        <div class="newsletter_form d-flex flex-md-row flex-column flex-xs-column align-items-center justify-content-lg-end justify-content-center">
+            @*@Html.TextBoxFor(x => x.Email, new {})*@
+            @Html.ValidationSummary("", new { @class = "text-danger" })
+            <input id="newsletter_email" name="Email" type="email" placeholder="Your email" required="required" data-error="Valid email is required.">
+            <button id="newsletter_submit" type="submit" class="newsletter_submit_btn trans_300" value="Submit">đăng kí</button>
+        </div>
+    }
+</div>

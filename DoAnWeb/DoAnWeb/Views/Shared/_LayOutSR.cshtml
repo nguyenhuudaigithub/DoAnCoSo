@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/Content/Login/style.css">
+    <link rel="icon" href="~/Content/favicon.ico" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <style>
+        .back-button {
+            position: absolute;
+            top: 0;
+            left: -79px;
+            z-index: 9999;
+            width: 40px;
+            height: 40px;
+            background-image: url('../../content/login/icons8-back-100.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            cursor: pointer;
+        }
+    </style>
+    <title>Đăng Nhập</title>
+</head>
+<body>
+
+    <div class="wrapper" style="background: url('../../content/user/assets/img/hero-bg.jpg')">
+        <div class="container main">
+            <div class="row">
+                <div class="col-md-6 side-image" style="position: relative;">
+                    <a href="https://localhost:44321/" class="back-button"></a>
+                </div>
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

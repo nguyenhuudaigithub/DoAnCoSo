@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Nancy.Encryption.MachineKey</name>
+    </assembly>
+    <members>
+        <member name="T:Nancy.Encryption.MachineKey.MachineKeyCryptographyConfigurations">
+            <summary>
+            Helpers for creating crypto configs from machine.config crypto types
+            </summary>
+        </member>
+        <member name="P:Nancy.Encryption.MachineKey.MachineKeyCryptographyConfigurations.Default">
+            <summary>
+            Gets the default configuration for machinekey encryption.
+            Uses the machine key for both encryption and hmac generation
+            </summary>
+        </member>
+        <member name="P:Nancy.Encryption.MachineKey.MachineKeyCryptographyConfigurations.NoEncryption">
+            <summary>
+            Gets the configuration to use machine key for HMAC, but no encryption
+            </summary>
+        </member>
+        <member name="T:Nancy.Encryption.MachineKey.MachineKeyEncryptionProvider">
+            <summary>
+            An encryption provider that uses the ASP.Net MachineKey
+            </summary>
+        </member>
+        <member name="M:Nancy.Encryption.MachineKey.MachineKeyEncryptionProvider.Encrypt(System.String)">
+            <summary>
+            Encrypt and base64 encode the string
+            </summary>
+            <param name="data">Data to encrypt</param>
+            <returns>Encrypted string</returns>
+        </member>
+        <member name="M:Nancy.Encryption.MachineKey.MachineKeyEncryptionProvider.Decrypt(System.String)">
+            <summary>
+            Decrypt string
+            </summary>
+            <param name="data">Data to decrypt</param>
+            <returns>Decrypted string</returns>
+        </member>
+        <member name="T:Nancy.Encryption.MachineKey.MachineKeyHmacProvider">
+            <summary>
+            A HMAC provider using the ASP.Net Machine key
+            
+            This is hacky as anything because of all kinds of horrible
+            internal sealed nonsense inside the framework.
+            </summary>
+        </member>
+        <member name="P:Nancy.Encryption.MachineKey.MachineKeyHmacProvider.HmacLength">
+            <summary>
+            Gets the length of the HMAC signature in bytes
+            </summary>
+        </member>
+        <member name="M:Nancy.Encryption.MachineKey.MachineKeyHmacProvider.GenerateHmac(System.String)">
+            <summary>
+            Create a hmac from the given data
+            </summary>
+            <param name="data">Data to create hmac from</param>
+            <returns>Hmac bytes</returns>
+        </member>
+        <member name="M:Nancy.Encryption.MachineKey.MachineKeyHmacProvider.GenerateHmac(System.Byte[])">
+            <summary>
+            Create a hmac from the given data
+            </summary>
+            <param name="data">Data to create hmac from</param>
+            <returns>Hmac bytes</returns>
+        </member>
+        <member name="M:Nancy.Encryption.MachineKey.MachineKeyHmacProvider.GetHmacLength">
+            <summary>
+            Uses reflection to get the hmac length that machine key will generate
+            </summary>
+        </member>
+        <member name="M:Nancy.Encryption.MachineKey.MachineKeyHmacProvider.HexStringToByteArray(System.String)">
+            <summary>
+            Converts a string of "hex bytes" to actual bytes.
+            We could just use the same method as .net does but
+            like a lot of useful things in .net, it's internal.
+            </summary>
+            <param name="data">String of hex bytes</param>
+            <returns>Actual byte array</returns>
+        </member>
+    </members>
+</doc>

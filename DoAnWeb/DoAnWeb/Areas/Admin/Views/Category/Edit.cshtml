@@ -1,0 +1,90 @@
+﻿@model DoAnWeb.Models.EF.Category
+@{
+    ViewBag.Title = "Cập Nhật Danh Mục";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<!-- Content Header (Page header) -->
+<section class="content-header" style="margin-top:20px">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-8">
+                <h1 style="margin-left: 58%; font-weight: bold; font-size:35px">Chỉnh Sửa Danh Mục</h1>
+            </div>
+            <div class="col-sm-4">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/admin/category">Danh mục</a></li>
+                    <li class="breadcrumb-item active"><a href="#">@ViewBag.Title</a></li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-body">
+            <div class="bs-stepper-content">
+                @using (Html.BeginForm("Edit", "Category", FormMethod.Post, new { }))
+                {
+                    @Html.AntiForgeryToken();
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(x=>x.id)
+                    @*< !--your steps content here-- >*@
+                <div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Tên danh mục</label>
+                        @Html.TextBoxFor(x => x.title, new { @class = "form-control", @placeholder = "Tên danh mục" })
+                        @Html.ValidationMessageFor(x => x.title, null, new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Alias</label>
+                        @Html.TextAreaFor(x => x.alias, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.alias, null, new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Link</label>
+                        @Html.TextAreaFor(x => x.link, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.link, null, new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Mô tả</label>
+                        @Html.TextAreaFor(x => x.description, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Thứ tự</label>
+                        @Html.TextBoxFor(x => x.position, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.title, null, new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Seo title</label>
+                        @Html.TextAreaFor(x => x.seotitle, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Seo Description</label>
+                        @Html.TextAreaFor(x => x.seodescription, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Seo Keywords</label>
+                        @Html.TextAreaFor(x => x.seokeywords, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        <a href="/admin/category" class="btn btn-danger">Quay lại</a>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                    </div>
+                </div>
+                }
+
+            </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+
+</section>

@@ -1,0 +1,110 @@
+﻿@model DoAnWeb.Models.EF.ProductCategory
+@{
+    ViewBag.Title = "Chỉnh Sửa Danh Mục Sản Phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<!-- Content Header (Page header) -->
+<section class="content-header" style="margin-top:20px">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-8">
+                <h1 style="margin-left: 51%; font-weight: bold; font-size:35px">@ViewBag.Title</h1>
+            </div>
+            <div class="col-sm-4">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Quản Lý Danh Mục Sản Phẩm</a></li>
+                    <li class="breadcrumb-item active">Chỉnh Sửa Danh Mục Sản Phẩm</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-body">
+            <div class="bs-stepper-content">
+                @using (Html.BeginForm("Edit", "ProductCategory", FormMethod.Post, new { }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(x => x.createddate)
+                    @Html.HiddenFor(x=>x.id)
+                    <!-- your steps content here -->
+                    <div id="logins-part" class="content active dstepper-block" role="tabpanel" aria-labelledby="logins-part-trigger">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Tiêu đề</label>
+                            @Html.TextBoxFor(x => x.title, new { @class = "form-control", @placeholder = "Tiêu đề" })
+                            @Html.ValidationMessageFor(x => x.title, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputFile">Ảnh</label>
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    @Html.TextBoxFor(x => x.icon, new { @id = "txtImage", @class = "form-control" })
+                                </div>
+                                <div class="input-group-append">
+                                    <input type="button" value="Tải ảnh" onclick="BrowseServer('txtImage');" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Alias</label>
+                            @Html.TextBoxFor(x => x.alias, new { @class = "form-control", @placeholder = "Alias" })
+                            @Html.ValidationMessageFor(x => x.alias, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Seo title</label>
+                            @Html.TextAreaFor(x => x.seotitle, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">SeoDescription</label>
+                            @Html.TextAreaFor(x => x.seodescription, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">SeoKeywords</label>
+                            @Html.TextAreaFor(x => x.seokeywords, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+
+                            <a href="/admin/productcategory" class="btn btn-danger">Quay lại</a>
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                        </div>
+                    </div>
+
+                }
+
+            </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
+
+@section  scripts{
+    <script>
+          $(document).ready(function () {
+              CKEDITOR.replace('txtDetail', {
+                  customConfig: '/content/ckeditor/config.js',
+                  extraAllowedContent: 'span',
+              });
+          });
+          function BrowseServer(field) {
+              var finder = new CKFinder();
+              finder.selectActionFunction = function (fileUrl) {
+                  document.getElementById(field).value = fileUrl;
+              };
+              finder.popup();
+          }
+
+    </script>
+}

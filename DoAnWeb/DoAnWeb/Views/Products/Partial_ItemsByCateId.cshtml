@@ -1,0 +1,44 @@
+﻿@model IEnumerable<DoAnWeb.Models.EF.Product>
+
+@if (Model != null && Model.Any())
+{
+    foreach (var item in Model)
+    {
+        var strImage = "";
+        var img = item.ProductImage.FirstOrDefault(x => x.isdefault);
+        if (img != null)
+        {
+            strImage = img.image;
+        }
+        <div class="col-lg-6 menu-item filter-starters" style="position: absolute; left: 0px; top: 0px;">
+            <div class="@item.ProductCategory.alias" style=" margin-top: 10%">
+                <img src="@strImage" class="menu-img" alt="@item.title" style="height: 70px;">
+                @if (item.pricesale > 0)
+                {
+                    <div class="product_bubble product_bubble_red d-flex flex-column align-items-center" style="left: -26px; top: -16px; "><span>Sale</span></div>
+
+                }
+                <div class="menu-content">
+                    <div>
+                        <a href="/chi-tiet/@item.alias-@(item.id)">@item.title</a>
+                        <span>
+                            @if (item.pricesale > 0)
+                            {
+                                <div class="product_price">@DoAnWeb.Common.Common.FormatNumber(item.pricesale, 0)<span>@DoAnWeb.Common.Common.FormatNumber(item.price, 0)</span></div>
+                            }
+                            else
+                            {
+                                <div class="product_price">@DoAnWeb.Common.Common.FormatNumber(item.price, 0)</div>
+
+                            }
+                        </span>
+                    </div>
+                </div>
+                <div class="menu-ingredients">
+                    @item.description
+                    <a href="#" class="btnAddToCart" data-id="@item.id">Thêm giỏ hàng.</a>
+                </div>
+            </div>
+        </div>
+   }
+}
